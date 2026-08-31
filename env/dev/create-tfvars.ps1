@@ -8,15 +8,20 @@ if (-not (Test-Path $inputPath)) {
     exit
 }
 
-# Read lines from input file (ignoring empty lines and header)
-$lines = Get-Content -Path $inputPath | Where-Object { $_.Trim() -ne "" } | Select-Object -Skip 1
+# Read all non-empty lines
+$lines = Get-Content -Path $inputPath | Where-Object { $_.Trim() -ne "" }
 
-# Array to store map string blocks
+# Skip header row if present
+if ($lines.Count -gt 1 -and ($lines[0] -match "rg_name" -or $lines[0] -match "name")) {
+    $lines = $lines | Select-Object -Skip 1
+}
+
+# Array to store structured map blocks
 $mapBlocks = @()
 
 foreach ($line in $lines) {
-    # Split line by whitespace (one or more spaces/tabs)
-    $parts = $line.Trim() -split '\s+'
+    # Split by comma OR space/tab whitespace
+    $parts = $line.Trim() -split '[\s,]+'
     
     if ($parts.Count -ge 2) {
         $rgName   = $parts[0]
@@ -35,10 +40,10 @@ foreach ($line in $lines) {
     }
 }
 
-# Join map blocks with a single trailing comma and newline separating each entry
+# Join map blocks with commas between entries
 $tfvarsContent = "rg_map = {`n" + ($mapBlocks -join ",`n") + "`n}"
 
-# Write cleanly to terraform.tfvars
+# Write directly to terraform.tfvars
 [System.IO.File]::WriteAllText((Resolve-Path .).Path + "\terraform.tfvars", $tfvarsContent)
 
 Write-Host "Successfully generated '$tfvarsPath'!" -ForegroundColor Green
