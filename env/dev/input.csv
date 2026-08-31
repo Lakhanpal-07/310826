@@ -1,0 +1,6 @@
+rg name   location
+rg01      westus 
+rg02     eastus
+rg03     centralus
+rg04     westeurope
+rg05     southeastasia
