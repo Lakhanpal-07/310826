@@ -47,3 +47,6 @@ $tfvarsContent = "rg_map = {`n" + ($mapBlocks -join ",`n") + "`n}"
 [System.IO.File]::WriteAllText((Resolve-Path .).Path + "\terraform.tfvars", $tfvarsContent)
 
 Write-Host "Successfully generated '$tfvarsPath'!" -ForegroundColor Green
+
+
+
