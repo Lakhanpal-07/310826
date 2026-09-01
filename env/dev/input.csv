@@ -1,4 +1,4 @@
-rg name   location
-rg01      westus 
-rg02      eastus
-rg_org    centralus
+rg_name   location   vnet_name   address_prefix
+rg01      westus     vnet01      10.123.0.0/16
+rg02      eastus     vnet02      10.124.0.0/16
+rg_org    centralus  vnet03      10.125.0.0/16
