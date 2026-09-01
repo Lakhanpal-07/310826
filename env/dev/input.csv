@@ -1,2 +1,4 @@
 rg name   location
 rg01      westus 
+rg02      eastus
+rg_org    centralus
